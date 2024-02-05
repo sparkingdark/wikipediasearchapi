@@ -85,3 +85,14 @@ cd your-fastapi-app
 4. Access the FastAPI application at `http://localhost:8000/docs/` .
 
 
+## Test the App
+
+For test the app one must have installed, `httpx`, `pytest`. Then just run:
+
+```python
+   pytest --log-cli-level=DEBUG
+```
+
+## Technology Used to build this:
+
+[fastapi](https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png)
