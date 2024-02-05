@@ -41,11 +41,11 @@ EndPoint: `/searchhistory`
 - **Example Response**:
   
   ```json
-[
-  {"topic": "Natural Language Processing", "n": 10},
-  {"topic": "Machine Learning", "n": 5, "id": "3e2b493a-814e-4a41-81c8-6876ea29e13b", "top_words": [...]},
-  ...
-]
+    [
+    {"topic": "Natural Language Processing", "n": 10},
+    {"topic": "Machine Learning", "n": 5, "id": "3e2b493a-814e-4a41-81c8-6876ea29e13b", "top_words": [...]},
+    ...
+    ]
 
 
 
