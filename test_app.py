@@ -38,5 +38,3 @@ def test_search_history():
 
     assert response.status_code == 200
     assert isinstance(history, list)
-
-    # Add more assertions based on the expected structure of the response
