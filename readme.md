@@ -95,4 +95,4 @@ For test the app one must have installed, `httpx`, `pytest`. Then just run:
 
 ## Technology Used to build this:
 
-[fastapi](https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png)
+[fastapi]([https://fastapi.tiangolo.com/img/logo-margin/logo-teal.png](https://fastapi.tiangolo.com/)https://fastapi.tiangolo.com/)
