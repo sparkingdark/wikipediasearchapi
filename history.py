@@ -31,6 +31,8 @@ class JSONSearchHistory:
                 return json.load(file)
         except FileNotFoundError:
             return []
+        except Exception:
+            return []
 
     def save_history(self):
         with open(self.filename, 'w') as file:
