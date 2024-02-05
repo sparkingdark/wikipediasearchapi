@@ -6,6 +6,7 @@ from loguru import logger
 from nltk.corpus import stopwords
 from fastapi import FastAPI
 from analyzer import analysze_text, wikipedia_content
+from datetime import datetime
 from models import WordFrequencyAnalysisTopicModel
 from history import JSONSearchHistory
 
@@ -40,7 +41,9 @@ def word_frequency_analysis(data: WordFrequencyAnalysisTopicModel):
     Raises:
         None
     """
-    json_search_history.add_to_history(json.dumps(data.dict()))
+    saved_data = data.dict()
+    saved_data["timestamp"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    json_search_history.add_to_history(json.dumps(saved_data))
     topic = data.topic
     n_words = data.n
 
@@ -53,6 +56,7 @@ def word_frequency_analysis(data: WordFrequencyAnalysisTopicModel):
     if type(text) == dict:
         return text
     top_words = analysze_text(text,topic,n_words)
+    top_words["timestamp"] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     json_search_history.add_to_history(json.dumps(top_words))
     return top_words
 

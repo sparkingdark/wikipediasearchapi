@@ -5,6 +5,7 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from collections import Counter
 from loguru import logger
+from datetime import datetime
 from typing import Union,List,Dict
 from history import  JSONSearchHistory
 
@@ -28,12 +29,12 @@ def wikipedia_content(topic: str) -> Union[str, Dict[str, Union[str, List[str]]]
         return content
     except wikipedia.exceptions.DisambiguationError as e:
         logger.error(f"DisambiguationError: {e}")
-        error_data = {"error": "Exact topic is not available, pass any topics available from the options.", "options": e.options,"id":str(uuid4())}
+        error_data = {"error": "Exact topic is not available, pass any topics available from the options.", "options": e.options,"id":str(uuid4()),"timestamp":datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
         json_search_history.add_to_history(json.dumps(error_data))
         return error_data
     except Exception as e:
         logger.error(f"Error fetching Wikipedia page: {e}")
-        error_data = {"error": "Error fetching Wikipedia page","id":str(uuid4())}
+        error_data = {"error": "Error fetching Wikipedia page","id":str(uuid4()),"timestamp":datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
         json_search_history.add_to_history(json.dumps(error_data))
         return error_data
     
