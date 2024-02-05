@@ -26,16 +26,20 @@ except (LookupError, FileNotFoundError):
 
 json_search_history = JSONSearchHistory()
 
-
-
-
-    
-
-    
-
-
 @app.post("/wordfrequencyanalysis")
 def word_frequency_analysis(data: WordFrequencyAnalysisTopicModel):
+    """
+    Analyze word frequency in a given article based on the provided topic and number of top words.
+
+    Args:
+        data (WordFrequencyAnalysisTopicModel): The input data containing the topic and number of top words.
+
+    Returns:
+        dict: Dictionary containing the topic, a unique identifier (id), and the top words with their counts.
+
+    Raises:
+        None
+    """
     json_search_history.add_to_history(json.dumps(data.dict()))
     topic = data.topic
     n_words = data.n
@@ -54,5 +58,14 @@ def word_frequency_analysis(data: WordFrequencyAnalysisTopicModel):
 
 @app.get("/searchhistory")
 def search_history():
+    """
+    Retrieve the search history.
+
+    Returns:
+        List[Union[str, dict]]: List containing the search history items.
+
+    Raises:
+        None
+    """
     history = [json.loads(item) for item in json_search_history.get_history()]
     return history

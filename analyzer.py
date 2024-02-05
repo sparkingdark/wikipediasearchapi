@@ -11,6 +11,18 @@ from history import  JSONSearchHistory
 json_search_history = JSONSearchHistory()
 
 def wikipedia_content(topic: str) -> Union[str, Dict[str, Union[str, List[str]]]]:
+    """
+    Fetch content from Wikipedia based on the given topic.
+
+    Args:
+        topic (str): The subject of the Wikipedia article.
+
+    Returns:
+        Union[str, Dict[str, Union[str, List[str]]]]: Content of the Wikipedia article or error information.
+
+    Raises:
+        None
+    """
     try:
         content = wikipedia.page(topic).content
         return content
@@ -27,6 +39,20 @@ def wikipedia_content(topic: str) -> Union[str, Dict[str, Union[str, List[str]]]
     
 
 def analysze_text(text:str,topic:str,n:int):
+    """
+    Analyze the text content and extract the top n words by frequency.
+
+    Args:
+        text (str): The text content to analyze.
+        topic (str): The topic of the analysis.
+        n (int): The number of top words to extract.
+
+    Returns:
+        dict: Dictionary containing the topic, a unique identifier (id), and the top n words with their counts.
+
+    Raises:
+        None
+    """
     # Tokenize the text and remove stopwords
     tokens = [word.lower() for word in word_tokenize(text) if word.isalpha() and word.lower() not in stopwords.words('english')]
     # Use Counter to count word occurrences
