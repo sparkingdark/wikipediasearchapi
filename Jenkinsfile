@@ -2,35 +2,46 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE_NAME = "wikipedia"
+        DOCKER_IMAGE_NAME = "testapp"
         DOCKER_TAG = "latest"
     }
 
     stages {
-        stage('Checkout') {
+        stage('Clone repository') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build image') {
             steps {
                 script {
-                    // You may include additional build steps or customizations here
-                    sh "docker build -t ${DOCKER_IMAGE_NAME}:${DOCKER_TAG} ."
+                    // This builds the actual image
+                    docker.build(DOCKER_IMAGE_NAME)
                 }
             }
         }
 
-        stage('Deploy Locally') {
+        stage('Test image') {
             steps {
                 script {
-                    // Stop and remove the existing container if it exists
-                    sh "docker stop ${DOCKER_IMAGE_NAME} || true"
-                    sh "docker rm ${DOCKER_IMAGE_NAME} || true"
+                    // Run tests using a Node.js testing framework (e.g., Mocha or Jest)
+                    docker.image(DOCKER_IMAGE_NAME).inside {
+                        sh 'npm install' // Install dependencies
+                        sh 'npm test'     // Run tests
+                    }
+                }
+            }
+        }
 
-                    // Run the new container
-                    sh "docker run -d --name ${DOCKER_IMAGE_NAME} -p 8080:80 ${DOCKER_IMAGE_NAME}:${DOCKER_TAG}"
+        stage('Push image') {
+            steps {
+                script {
+                    // Push the image with two tags
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        docker.image(DOCKER_IMAGE_NAME).push("${env.BUILD_NUMBER}")
+                        docker.image(DOCKER_IMAGE_NAME).push("latest")
+                    }
                 }
             }
         }
@@ -38,10 +49,10 @@ pipeline {
 
     post {
         success {
-            echo "Docker image build and deployment successful!"
+            echo "Docker image build, test, and push successful!"
         }
         failure {
-            echo "Build or deployment failed. Check the Jenkins logs for details."
+            echo "Build, test, or push failed. Check the Jenkins logs for details."
         }
     }
 }
